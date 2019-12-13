@@ -1,4 +1,9 @@
 <h3 class="first">Project List</h3>
-<div class="p-grid">
-  <div *ngFor="let project of projects" class="p-col-12 p-md-6 p-lg-3">{{project.name}}</div>
+<div class="ui-fluid">
+  <div class="ui-g">
+    <p-card *ngFor="let project of projects" [header]="project.name" 
+      [subheader]="project.totalCost | currency" class="ui-g-12 ui-md-6 ui-lg-3">
+      Project
+    </p-card>
+  </div>
 </div>
