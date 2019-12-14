@@ -13,12 +13,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { AddProjectComponent } from './add-project/add-project.component';
+import { ProjectComponent } from './project/project.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProjectListComponent,
-    AddProjectComponent
+    AddProjectComponent,
+    ProjectComponent
   ],
   entryComponents: [AddProjectComponent],
   imports: [

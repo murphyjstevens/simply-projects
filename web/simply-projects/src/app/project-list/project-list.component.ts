@@ -41,4 +41,8 @@ export class ProjectListComponent implements OnInit {
       }
     });
   }
+
+  openProject(id: number) {
+    this.router.navigate(['/project', id]);
+  }
 }

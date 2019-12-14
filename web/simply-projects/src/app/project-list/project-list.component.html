@@ -5,7 +5,7 @@
 
 <div class="ui-fluid">
   <p-card *ngFor="let project of projects" [header]="project.name" 
-    [subheader]="project.totalCost | currency" class="ui-g-12 ui-md-6 ui-lg-3">
+    [subheader]="project.totalCost | currency" (click)="openProject(project.id)" class="ui-g-12 ui-md-6 ui-lg-3">
     {{project.description}}
   </p-card>
 </div>
