@@ -36,7 +36,7 @@ export class ProjectListComponent implements OnInit {
     });
 
     ref.onClose.subscribe(result => {
-      if (result.didAddProject) {
+      if (result && result.didAddProject) {
         this.getProjects();
       }
     });

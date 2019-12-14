@@ -9,6 +9,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 export class AddProjectComponent implements OnInit {
   name: string;
   totalCost: number;
+  description: string;
 
   constructor(public ref: DynamicDialogRef) { }
 

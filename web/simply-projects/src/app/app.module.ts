@@ -7,19 +7,18 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { AddProjectComponent } from './add-project/add-project.component';
-import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProjectListComponent,
-    AddProjectComponent,
-    HeaderComponent
+    AddProjectComponent
   ],
   entryComponents: [AddProjectComponent],
   imports: [
@@ -30,7 +29,8 @@ import { HeaderComponent } from './header/header.component';
     ButtonModule,
     CardModule,
     DynamicDialogModule,
-    InputTextModule
+    InputTextModule,
+    InputTextareaModule
   ],
   providers: [],
   bootstrap: [AppComponent]
