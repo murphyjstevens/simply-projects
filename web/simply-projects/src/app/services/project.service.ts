@@ -10,6 +10,7 @@ export class ProjectService {
   constructor() { }
 
   getMockProjects(): Observable<Project[]> {
-    return of(MOCK_PROJECTS.map(project => new Project(project.id, project.name, project.userId, project.totalCost)));
+    return of(MOCK_PROJECTS.map(project =>
+      new Project(project.id, project.name, project.userId, project.totalCost, project.description)));
   }
 }
