@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MOCK_PROJECTS } from '../mocks/mock-projects';
 import { Project } from '../models/project';
 
@@ -11,7 +11,8 @@ import { Project } from '../models/project';
 export class ProjectComponent implements OnInit {
   project: Project;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit() {
     this.getProject();
@@ -20,6 +21,14 @@ export class ProjectComponent implements OnInit {
   private getProject() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.project = MOCK_PROJECTS.find(x => x.id === id);
+  }
+
+  back() {
+    this.router.navigate(['/']);
+  }
+
+  save() {
+    this.router.navigate(['/']);
   }
 
 }

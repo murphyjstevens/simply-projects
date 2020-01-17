@@ -25,7 +25,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   private getProjects() {
-    this.projectService.getMockProjects().subscribe(projects => this.projects = projects);
+    this.projectService.getProjects().subscribe(projects => this.projects = projects);
     console.log('Loaded mock projects');
   }
 

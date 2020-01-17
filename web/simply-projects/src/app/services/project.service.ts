@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { MOCK_PROJECTS } from '../mocks/mock-projects';
 import { Observable, of } from 'rxjs';
 import { Project } from '../models/project';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getMockProjects(): Observable<Project[]> {
-    return of(MOCK_PROJECTS.map(project =>
-      new Project(project.id, project.name, project.userId, project.totalCost, project.description)));
+  private endpoint = 'https://localhost:5001/Projects';
+  getProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(this.endpoint);
   }
 }
