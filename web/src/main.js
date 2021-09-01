@@ -3,8 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import App from './App.vue'
 
-// import './assets/variables.css'
-// import './assets/global.css'
+import './assets/global.css'
 
 import ProjectList from './components/ProjectList'
 import Project from './components/Project'
