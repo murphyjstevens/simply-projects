@@ -1,26 +1,28 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createApp, h } from 'vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 import App from './App.vue'
 
-import './assets/variables.css'
-import './assets/global.css'
+// import './assets/variables.css'
+// import './assets/global.css'
 
 import ProjectList from './components/ProjectList'
 import Project from './components/Project'
 
-Vue.use(VueRouter)
+const routes = [
+  { path: '/', name: 'ProjectList', component: ProjectList },
+  { path: '/Project', name: 'Project', component: Project }
+]
 
-const router = new VueRouter({
-  mode: 'history',
-  base: __dirname,
-  routes: [
-    { path: '/', name: 'ProjectList', component: ProjectList },
-    { path: '/Project', name: 'Project', component: Project }
-  ]
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes
 })
 
-new Vue({
-  render: h => h(App),
-  router
-}).$mount('#app')
+const app = createApp({
+  render: () => h(App)
+})
+
+app.use(router)
+
+app.mount('#app')
