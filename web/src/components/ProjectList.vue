@@ -17,11 +17,18 @@
       </div>
     </div>
   </div>
+
+  <AddProject ref="addModal" />
 </template>
 
 <script>
+import AddProject from './AddProject.vue'
+
 export default {
   name: 'ProjectList',
+  components: {
+    AddProject
+  },
   data () {
     return {
       projects: [
@@ -34,7 +41,9 @@ export default {
   },
   methods: {
     openAddProjectDialog () {
-      console.log('open')
+      if (this.$refs.addModal) {
+        this.$refs.addModal.open()
+      }
     }
   }
 }
