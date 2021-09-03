@@ -1,8 +1,8 @@
 <template>
   <header>
-    <button type="button" v-on:click="back()" class="btn btn-secondary">Back</button>
+    <router-link to="/" class="btn btn-secondary">Back</router-link>
     <span class="page-title">{{project.name}}</span>
-    <button type="button" v-on:click="save()" class="btn btn-primary">Save</button>
+    <button type="button" @click="save()" class="btn btn-primary">Save</button>
   </header>
 
   <div class="project-wrapper">
@@ -35,8 +35,12 @@ export default {
   name: 'Project',
   data () {
     return {
-      project: { id: 1, name: 'Flooring', userId: 1, totalCost: 50.0, description: '' }
+      project: {}
     }
+  },
+  mounted () {
+    console.log(this.$store.getters.getProjectById(this.$route.params.id))
+    this.project = this.$store.getters.getProjectById(this.$route.params.id)
   }
 }
 </script>

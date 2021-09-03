@@ -3,7 +3,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Add Project</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -25,8 +25,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" label="Save" class="btn btn-primary" v-on:click="save()"></button>
-          <button type="button" label="Close" class="btn btn-secondary" v-on:click="close()"></button>
+          <button type="button" class="btn btn-primary" @click="save()">Save</button>
+          <button type="button" class="btn btn-secondary" @click="close()">Close</button>
         </div>
       </div>
     </div>
@@ -40,21 +40,21 @@ export default {
   name: 'AddProject',
   data () {
     return {
-      modal: Modal,
-      name: String,
-      totalCost: Number,
-      description: String
+      modal: undefined,
+      name: '',
+      totalCost: 0.00,
+      description: ''
     }
   },
   mounted () {
-    // this.modal = new Modal(this.$refs.modal, {})
+    this.modal = new Modal(this.$refs.modal, {})
   },
   methods: {
     open () {
-      // this.modal.open()
+      this.modal.show()
     },
     close () {
-      // this.modal.hide()
+      this.modal.hide()
     }
   }
 }
