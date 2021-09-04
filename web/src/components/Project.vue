@@ -39,7 +39,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$store.getters.getProjectById(this.$route.params.id))
     this.project = this.$store.getters.getProjectById(this.$route.params.id)
   }
 }
