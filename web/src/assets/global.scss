@@ -1,0 +1,27 @@
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.page-header {
+  background-color: white;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+
+  .page-title {
+    margin: 5px 10px;
+    flex: 1;
+    font-size: 24px;
+    font-weight: bold;
+    text-overflow: ellipsis;
+  }
+}

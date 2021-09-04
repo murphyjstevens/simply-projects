@@ -4,7 +4,7 @@ import { createStore } from 'vuex'
 
 import App from './App.vue'
 
-import './assets/global.css'
+import './assets/global.scss'
 
 import ProjectList from './components/ProjectList'
 import Project from './components/Project'

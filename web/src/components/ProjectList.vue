@@ -1,8 +1,8 @@
 <template>
-  <header>
+  <div class="page-header">
     <span class="page-title">Project List</span>
     <button type="button" @click="openAddProjectDialog()" class="btn btn-primary">Add</button>
-  </header>
+  </div>
 
   <div class="container-fluid">
     <div class="row justify-content-center">
@@ -45,4 +45,8 @@ export default {
 </script>
 
 <style scoped>
+.card {
+  color: inherit;
+  text-decoration: none;
+}
 </style>
