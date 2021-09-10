@@ -31,13 +31,20 @@
       <textarea id="description"
         class="form-control input-column"
         v-model="project.description"></textarea>
+
+      <Materials :projectId="project?.id" />
     </div>
   </div>
 </template>
 
 <script>
+import Materials from './Materials.vue'
+
 export default {
   name: 'Project',
+  components: {
+    Materials
+  },
   data () {
     return {
       project: {}
