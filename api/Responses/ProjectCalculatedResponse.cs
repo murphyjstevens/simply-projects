@@ -1,8 +1,12 @@
-namespace Api.Models {
-    public class ProjectModel {
-        public ProjectModel(int id, string name, string description) {
+namespace Api.Responses
+{
+    public sealed class ProjectCalculatedResponse
+    {
+        public ProjectCalculatedResponse(int id, string name, decimal totalCost, string description)
+        {
             Id = id;
             Name = name;
+            TotalCost = totalCost;
             Description = description;
         }
         

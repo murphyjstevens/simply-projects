@@ -1,16 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Api.Mock;
-using Api.Models;
+using Api.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("Projects")]
     public class ProjectsController : ControllerBase
     {
         private readonly ILogger<ProjectsController> _logger;
@@ -21,9 +18,26 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ProjectModel> Get()
+        [Route("Projects")]
+        public IActionResult Get()
         {
-            return MockProjects.GetMockProjects();
+            return Ok(MockProjects.GetMockProjects());
+        }
+
+        [HttpGet]
+        [Route("Projects/Calculated")]
+        public IActionResult GetCalculated()
+        {
+            var projects = MockProjects.GetMockProjects();
+            var materials = MockMaterials.GetMockMaterials();
+            IEnumerable<ProjectCalculatedResponse> response = projects.Select(project => {
+                return new ProjectCalculatedResponse(
+                    id: project.Id,
+                    name: project.Name,
+                    totalCost: materials.Where(material => material.ProjectId == project.Id).Sum(material => material.Cost * material.Quantity),
+                    description: project.Description);
+            });
+            return Ok(response);
         }
     }
 }
