@@ -42,7 +42,7 @@ export default {
       }
     }
   },
-  beforeMount () {
+  created () {
     this.$store.dispatch('projects/get')
   }
 }

@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import Materials from './Materials.vue'
 
 export default {
@@ -51,13 +50,16 @@ export default {
       project: null
     }
   },
-  computed: {
-    ...mapGetters('projects', {
-      findProject: 'find'
-    })
+  watch: {
+    '$store.state.projects.project': function () {
+      if (!this.project) {
+        this.project = this.$store.state.projects.project
+      }
+    }
   },
   mounted () {
-    this.project = this.findProject(+this.$route.params.id)
+    this.project = null
+    this.$store.dispatch('projects/find', +this.$route.params.id)
   }
 }
 </script>
