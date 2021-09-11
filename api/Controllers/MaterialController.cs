@@ -20,11 +20,35 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("projects/${projectId}/materials")]
+        [Route("projects/{projectId}/materials")]
         public async Task<IActionResult> GetByProjectId(int projectId)
         {
             IEnumerable<Material> materials = await _repository.GetByProjectId(projectId);
             return Ok(materials);
+        }
+
+        [HttpPost]
+        [Route("materials")]
+        public async Task<IActionResult> Create(Material material)
+        {
+            Material newMaterial = await _repository.Create(material);
+            return Ok(newMaterial);
+        }
+
+        [HttpPut]
+        [Route("materials")]
+        public async Task<IActionResult> Update(Material material)
+        {
+            Material updatedMaterial = await _repository.Update(material);
+            return Ok(updatedMaterial);
+        }
+
+        [HttpDelete]
+        [Route("materials/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _repository.Delete(id);
+            return Ok();
         }
     }
 }
