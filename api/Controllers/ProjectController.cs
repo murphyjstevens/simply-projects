@@ -10,12 +10,12 @@ namespace Api.Controllers
     [ApiController]
     public class ProjectController : ControllerBase
     {
-        private readonly IProjectRepository _projectRepository;
+        private readonly IProjectRepository _repository;
         private readonly ILogger<ProjectController> _logger;
 
-        public ProjectController(IProjectRepository projectRepository, ILogger<ProjectController> logger)
+        public ProjectController(IProjectRepository repository, ILogger<ProjectController> logger)
         {
-            _projectRepository = projectRepository;
+            _repository = repository;
             _logger = logger;
         }
 
@@ -23,7 +23,7 @@ namespace Api.Controllers
         [Route("projects")]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<Project> projects = await _projectRepository.Get();
+            IEnumerable<Project> projects = await _repository.Get();
             return Ok(projects);
         }
 
@@ -31,8 +31,32 @@ namespace Api.Controllers
         [Route("projects/calculated")]
         public async Task<IActionResult> GetCalculated()
         {
-            IEnumerable<Project> projects = await _projectRepository.GetCalculated();
+            IEnumerable<Project> projects = await _repository.GetCalculated();
             return Ok(projects);
+        }
+
+        [HttpPost]
+        [Route("projects")]
+        public async Task<IActionResult> Create(Project project)
+        {
+            Project newProject = await _repository.Create(project);
+            return Ok(newProject);
+        }
+
+        [HttpPut]
+        [Route("projects")]
+        public async Task<IActionResult> Update(Project project)
+        {
+            Project updatedProject = await _repository.Update(project);
+            return Ok(updatedProject);
+        }
+
+        [HttpDelete]
+        [Route("projects/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _repository.Delete(id);
+            return Ok();
         }
     }
 }
