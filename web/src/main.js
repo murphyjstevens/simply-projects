@@ -2,7 +2,7 @@ import { createApp, h } from 'vue'
 
 import { filters } from './filters'
 import { router } from './router'
-import { store } from './store'
+import store from './store'
 
 import App from './App'
 

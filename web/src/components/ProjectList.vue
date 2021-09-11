@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import AddProject from './AddProject.vue'
 
 export default {
@@ -29,10 +30,10 @@ export default {
   components: {
     AddProject
   },
-  data () {
-    return {
-      projects: this.$store.state.projects
-    }
+  computed: {
+    ...mapState({
+      projects: state => state.projects.all
+    })
   },
   methods: {
     openAddProjectDialog () {
@@ -40,6 +41,9 @@ export default {
         this.$refs.addModal.open()
       }
     }
+  },
+  beforeMount () {
+    this.$store.dispatch('projects/get')
   }
 }
 </script>

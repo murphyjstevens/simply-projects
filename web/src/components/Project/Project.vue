@@ -1,5 +1,5 @@
 <template>
-  <div class="page-header">
+  <div class="page-header" v-if="project">
     <router-link to="/"
       class="btn btn-secondary">Back</router-link>
     <span class="page-title">{{project.name}}</span>
@@ -8,7 +8,7 @@
       class="btn btn-primary">Save</button>
   </div>
 
-  <div class="project-wrapper">
+  <div class="project-wrapper" v-if="project">
     <div class="project-content flex-column">
       <label for="name">Name</label>
       <input id="name"
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Materials from './Materials.vue'
 
 export default {
@@ -47,11 +48,16 @@ export default {
   },
   data () {
     return {
-      project: {}
+      project: null
     }
   },
+  computed: {
+    ...mapGetters('projects', {
+      findProject: 'find'
+    })
+  },
   mounted () {
-    this.project = this.$store.getters.getProjectById(this.$route.params.id)
+    this.project = this.findProject(+this.$route.params.id)
   }
 }
 </script>
