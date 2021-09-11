@@ -35,6 +35,14 @@ namespace Api.Controllers
             return Ok(projects);
         }
 
+        [HttpGet]
+        [Route("projects/{id}")]
+        public async Task<IActionResult> Find(int id)
+        {
+            Project project = await _repository.Find(id);
+            return Ok(project);
+        }
+
         [HttpPost]
         [Route("projects")]
         public async Task<IActionResult> Create(Project project)

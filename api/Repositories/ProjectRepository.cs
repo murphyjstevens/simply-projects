@@ -10,6 +10,7 @@ namespace Api.Repositories
   {
     Task<IEnumerable<Project>> Get();
     Task<IEnumerable<Project>> GetCalculated();
+    Task<Project> Find(int id);
     Task<Project> Create(Project category);
     Task<Project> Update(Project category);
     Task Delete(int id);
@@ -37,6 +38,15 @@ namespace Api.Repositories
 LEFT JOIN materials m ON m.project_id = p.id
 GROUP BY p.id, p.name, p.description";
         return await connection.QueryAsync<Project>(sql);
+      }
+    }
+
+    public async Task<Project> Find(int id)
+    {
+      using (var connection = new NpgsqlConnection(ConnectionString))
+      {
+        connection.Open();
+        return await connection.QueryFirstOrDefaultAsync<Project>($"SELECT {RETURN_OBJECT} FROM projects WHERE id = @id", new { id });
       }
     }
 
