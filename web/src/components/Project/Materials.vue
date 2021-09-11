@@ -25,9 +25,9 @@ export default {
     }
   },
   watch: {
-    projectId: function (projectId) {
-      if (projectId) {
-        this.materials = this.$store.getters.getMaterialsByProjectId(this.projectId)
+    '$store.state.materials.projectMaterials': function () {
+      if (!this.materials.length) {
+        this.materials = this.$store.state.materials.projectMaterials
       }
     }
   },
@@ -35,6 +35,10 @@ export default {
     calculateTotalCost (material) {
       return material ? material.cost * material.quantity : null
     }
+  },
+  created () {
+    this.materials = []
+    this.$store.dispatch('materials/getByProjectId', this.projectId)
   }
 }
 </script>
