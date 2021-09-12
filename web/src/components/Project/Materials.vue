@@ -29,6 +29,14 @@ export default {
       if (!this.materials.length) {
         this.materials = this.$store.state.materials.projectMaterials
       }
+    },
+    materials: function () {
+      if (this.materials.length) {
+        const totalCost = this.materials
+          .map(material => this.calculateTotalCost(material))
+          .reduce((previous, current) => previous + current)
+        this.$store.commit('projects/setTotalCost', totalCost)
+      }
     }
   },
   methods: {

@@ -21,9 +21,10 @@
       <div class="input-group input-column">
         <span class="input-group-text">$</span>
         <input id="totalCost"
-          v-model="project.totalCost"
+          v-model="totalCost"
           type="text"
           class="form-control"
+          readonly
           placeholder="Total Cost">
       </div>
 
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Materials from './Materials.vue'
 
 export default {
@@ -49,6 +51,11 @@ export default {
     return {
       project: null
     }
+  },
+  computed: {
+    ...mapState({
+      totalCost: state => state.projects.totalCost
+    })
   },
   watch: {
     '$store.state.projects.project': function () {
