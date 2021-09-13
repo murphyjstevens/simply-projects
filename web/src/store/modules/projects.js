@@ -4,8 +4,7 @@ const baseUrl = 'https://localhost:5001'
 
 const state = () => ({
   all: [],
-  project: undefined,
-  totalCost: 0.00
+  project: undefined
 })
 
 const getters = {
@@ -100,9 +99,6 @@ const mutations = {
   },
   deleteProject (state, projectId) {
     state.all = state.all.filter(project => project.id !== projectId)
-  },
-  setTotalCost (state, totalCost) {
-    state.totalCost = totalCost
   }
 }
 

@@ -1,9 +1,18 @@
 <template>
   <div class="materials-container">
-    <div v-for="material in materials" :key="material.id" class="list-group">
-      <div class="list-group-item list-group-item-action d-flex justify-content-between">
+    <div v-for="material in materials"
+      :key="material.id"
+      class="list-group">
+      <div class="list-group-item d-flex justify-content-between">
         <div class="left-container">
-          <h5 class="mb-1">{{ material.name }}</h5>
+          <div class="mb-1 d-flex">
+            <h5 class="me-1">{{ material.name }}</h5>
+            <button class="button-icon"
+              @click="openMaterialDialog(material)">
+              <i class="bi-pencil-fill"></i>
+            </button>
+          </div>
+
           <p class="mb-1">{{ $filters.toCurrency(material.cost) }} each</p>
           <small>x {{ material.quantity }}</small>
         </div>
@@ -13,15 +22,26 @@
       </div>
     </div>
   </div>
+
+  <MaterialDialog ref="modal"
+    :materialId="dialogMaterialId"
+    :projectId="dialogProjectId" />
 </template>
 
 <script>
+import MaterialDialog from './MaterialDialog.vue'
+
 export default {
   name: 'Materials',
+  components: {
+    MaterialDialog
+  },
   props: ['projectId'],
   data () {
     return {
-      materials: []
+      materials: [],
+      dialogMaterialId: null,
+      dialogProjectId: null
     }
   },
   watch: {
@@ -29,30 +49,38 @@ export default {
       if (!this.materials.length) {
         this.materials = this.$store.state.materials.projectMaterials
       }
-    },
-    materials: function () {
-      if (this.materials.length) {
-        const totalCost = this.materials
-          .map(material => this.calculateTotalCost(material))
-          .reduce((previous, current) => previous + current)
-        this.$store.commit('projects/setTotalCost', totalCost)
-      }
     }
   },
   methods: {
     calculateTotalCost (material) {
       return material ? material.cost * material.quantity : null
+    },
+    openMaterialDialog (material) {
+      if (this.$refs.modal) {
+        this.dialogMaterialId = material?.id
+        this.dialogProjectId = material?.projectId
+        setTimeout(() => {
+          this.$refs.modal.open()
+        })
+      }
     }
   },
   created () {
     this.materials = []
     this.$store.dispatch('materials/getByProjectId', this.projectId)
+  },
+  setTotalCost (state, totalCost) {
+    state.totalCost = totalCost
   }
 }
 </script>
 
 <style scoped lang="scss">
-  .material-cost {
-    opacity: 0.5;
+  .materials-container {
+    width: 500px;
+
+    .material-cost {
+      opacity: 0.5;
+    }
   }
 </style>

@@ -57,7 +57,7 @@ export default {
   computed: {
     ...mapState({
       stateProject: state => state.projects.project,
-      totalCost: state => state.projects.totalCost
+      totalCost: state => state.materials.totalCost
     })
   },
   methods: {
