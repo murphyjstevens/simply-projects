@@ -59,7 +59,7 @@ const actions = {
         console.error('Empty Project object')
         return
       }
-      const response = await axios.patch(baseUrl + '/projects', project)
+      const response = await axios.put(baseUrl + '/projects', project)
       commit('updateProject', response.data)
     } catch (error) {
       console.error(error)
@@ -90,8 +90,13 @@ const mutations = {
     state.all.push(project)
   },
   updateProject (state, project) {
-    const index = state.all.findIndex(p => p.id === project.id)
-    state.all[index] = project
+    if (state.all.length) {
+      const index = state.all.findIndex(p => p.id === project.id)
+      if (index !== -1) {
+        state.all[index] = project
+      }
+    }
+    state.project = project
   },
   deleteProject (state, projectId) {
     state.all = state.all.filter(project => project.id !== projectId)

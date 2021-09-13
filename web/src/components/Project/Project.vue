@@ -2,7 +2,7 @@
   <div class="page-header" v-if="project">
     <router-link to="/"
       class="btn btn-secondary">Back</router-link>
-    <span class="page-title">{{project.name}}</span>
+    <span class="page-title">{{stateProject.name}}</span>
     <button type="button"
       @click="save()"
       class="btn btn-primary">Save</button>
@@ -14,6 +14,7 @@
       <input id="name"
         class="form-control input-column"
         v-model="project.name"
+        @blur="blur()"
         type="text"
         placeholder="Name">
 
@@ -21,7 +22,7 @@
       <div class="input-group input-column">
         <span class="input-group-text">$</span>
         <input id="totalCost"
-          v-model="totalCost"
+          v-model.number="totalCost"
           type="text"
           class="form-control"
           readonly
@@ -31,7 +32,8 @@
       <label for="description">Description</label>
       <textarea id="description"
         class="form-control input-column"
-        v-model="project.description"></textarea>
+        v-model="project.description"
+        @blur="blur()"></textarea>
 
       <Materials :projectId="project?.id" />
     </div>
@@ -54,14 +56,24 @@ export default {
   },
   computed: {
     ...mapState({
+      stateProject: state => state.projects.project,
       totalCost: state => state.projects.totalCost
     })
   },
+  methods: {
+    blur () {
+      const hasChanges = !this.checkProjectEquals(this.project, this.stateProject)
+      if (hasChanges) {
+        this.$store.dispatch('projects/update', this.project)
+      }
+    },
+    checkProjectEquals (a, b) {
+      return (!a && !b) || (a && b && a.name === b.name && a.description === b.description)
+    }
+  },
   watch: {
     '$store.state.projects.project': function () {
-      if (!this.project) {
-        this.project = this.$store.state.projects.project
-      }
+      this.project = { ...this.stateProject }
     }
   },
   mounted () {
@@ -72,7 +84,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
   .project-content {
     .input-column {
       width: 300px;
