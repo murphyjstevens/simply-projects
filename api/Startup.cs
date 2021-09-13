@@ -33,14 +33,18 @@ namespace Api
                 options.AddPolicy(MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:8080");
+                        builder.WithOrigins("http://localhost:8080")
+                            .WithMethods("OPTIONS", "GET", "POST", "PATCH", "PUT", "DELETE")
+                            .WithHeaders("content-type");
                     }
                 );
             });
-            services.AddControllers();
+            services
+                .AddControllers();
 
-            services.AddScoped<IProjectRepository, ProjectRepository>();
-            services.AddScoped<IMaterialRepository, MaterialRepository>();
+            services
+                .AddScoped<IProjectRepository, ProjectRepository>()
+                .AddScoped<IMaterialRepository, MaterialRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
