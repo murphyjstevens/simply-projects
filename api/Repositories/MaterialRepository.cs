@@ -15,7 +15,7 @@ namespace Api.Repositories
   }
   public class MaterialRepository : CoreRepository, IMaterialRepository
   {
-    private const string RETURN_OBJECT = "id, project_id, name, cost, quantity";
+    private const string RETURN_OBJECT = "id, project_id as ProjectId, name, cost, quantity, sort_order as SortOrder";
 
     public async Task<IEnumerable<Material>> GetByProjectId(int projectId)
     {
@@ -32,8 +32,8 @@ namespace Api.Repositories
       using (var connection = new NpgsqlConnection(ConnectionString))
       {
         connection.Open();
-        string sql = $@"INSERT INTO materials (project_id, name, cost, quantity) 
-        VALUES (@ProjectId, @Name, @Cost, @Quantity)
+        string sql = $@"INSERT INTO materials (project_id, name, cost, quantity, sort_order) 
+        VALUES (@ProjectId, @Name, @Cost, @Quantity, @SortOrder)
         RETURNING {RETURN_OBJECT}";
         return await connection.QueryFirstOrDefaultAsync<Material>(sql, material);
       }
@@ -45,7 +45,7 @@ namespace Api.Repositories
       {
         connection.Open();
         string sql = $@"UPDATE materials
-        SET name = @Name, cost = @Cost, quantity = @Quantity
+        SET name = @Name, cost = @Cost, quantity = @Quantity, sort_order = @SortOrder
         WHERE id = @Id
         RETURNING {RETURN_OBJECT}";
         return await connection.QueryFirstOrDefaultAsync<Material>(sql, material);
