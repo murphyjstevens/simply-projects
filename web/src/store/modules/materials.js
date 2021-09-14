@@ -80,7 +80,7 @@ const actions = {
 
 const mutations = {
   setMaterials (state, materials) {
-    state.projectMaterials = materials
+    state.projectMaterials = materials.sort((a, b) => a.sortOrder - b.sortOrder)
     this.commit('materials/setTotalCost')
   },
   setMaterial (state, material) {
@@ -88,15 +88,19 @@ const mutations = {
   },
   addMaterial (state, material) {
     state.projectMaterials.push(material)
+    state.projectMaterials.sort((a, b) => a.sortOrder - b.sortOrder)
     this.commit('materials/setTotalCost')
   },
   updateMaterial (state, material) {
     const index = state.projectMaterials.findIndex(p => p.id === material.id)
     state.projectMaterials[index] = material
+    state.projectMaterials.sort((a, b) => a.sortOrder - b.sortOrder)
     this.commit('materials/setTotalCost')
   },
   deleteMaterial (state, materialId) {
-    state.projectMaterials = state.projectMaterials.filter(material => material.id !== materialId)
+    state.projectMaterials = state.projectMaterials
+      .filter(material => material.id !== materialId)
+      .sort((a, b) => a.sortOrder - b.sortOrder)
     this.commit('materials/setTotalCost')
   },
   setTotalCost (state) {

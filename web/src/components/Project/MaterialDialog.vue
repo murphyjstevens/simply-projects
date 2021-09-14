@@ -122,7 +122,7 @@ export default {
         const combinedMaterial = Object.assign({ ...this.originalMaterial }, updatedMaterial)
         await this.$store.dispatch('materials/update', combinedMaterial)
       } else {
-        const updatedMaterial = { name: this.name, cost: this.cost, quantity: this.quantity }
+        const updatedMaterial = { name: this.name, cost: this.cost, quantity: this.quantity, sortOrder: this.$store.state.materials.materials.length }
         await this.$store.dispatch('materials/create', updatedMaterial)
       }
       this.modal.hide()

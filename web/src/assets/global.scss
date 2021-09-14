@@ -21,6 +21,11 @@
   height: 19px;
 }
 
+.button-icon:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
 .flex-column {
   display: flex;
   flex-direction: column;
