@@ -1,6 +1,5 @@
 <template>
-  <div id="app">
-    <Sidebar />
+  <div id="app" class="app-content d-flex flex-row justify-content-center">
     <div class="content">
       <router-view />
     </div>
@@ -8,23 +7,16 @@
 </template>
 
 <script>
-import Sidebar from './components/Sidebar.vue'
-
 export default {
-  name: 'App',
-  components: {
-    Sidebar
-  }
+  name: 'App'
 }
 </script>
 
-<style>
-  body {
-    background-color: whitesmoke;
-  }
-
-  .content {
-    margin-left: 200px;
-    padding: 10px;
+<style scoped lang="scss">
+  .app-content {
+    .content {
+      padding: 10px;
+      width: 800px;
+    }
   }
 </style>

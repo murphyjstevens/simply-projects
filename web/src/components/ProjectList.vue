@@ -4,9 +4,9 @@
     <button type="button" @click="openAddProjectDialog()" class="btn btn-primary">Add</button>
   </div>
 
-  <div class="container-fluid">
-    <div class="row justify-content-center">
-      <div v-for="project in projects" :key="project.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
+  <div class="container">
+    <div class="row row-cols-2 justify-content-center">
+      <div v-for="project in projects" :key="project.id" class="col">
         <router-link :to="{ name: 'Project', params: { id: project.id }}" class="card">
           <div class="card-body">
             <h4 class="card-title">{{ project.name }}</h4>
@@ -48,7 +48,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .card {
   color: inherit;
   text-decoration: none;

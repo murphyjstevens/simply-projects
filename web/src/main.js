@@ -7,6 +7,7 @@ import store from './store'
 import App from './App'
 
 import './assets/global.scss'
+import './assets/bootstrap-override.css'
 
 const app = createApp({
   render: () => h(App)

@@ -3,9 +3,6 @@
     <router-link to="/"
       class="btn btn-secondary">Back</router-link>
     <span class="page-title">{{stateProject.name}}</span>
-    <button type="button"
-      @click="save()"
-      class="btn btn-primary">Save</button>
   </div>
 
   <div class="project-wrapper" v-if="project">
@@ -86,8 +83,6 @@ export default {
 <style scoped lang="scss">
   .project-content {
     .input-column {
-      width: 300px;
-      max-width: 100%;
       margin-bottom: 10px;
     }
 
