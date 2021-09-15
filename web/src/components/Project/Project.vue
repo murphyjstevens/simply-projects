@@ -17,7 +17,7 @@
     <div class="input-group input-column">
       <span class="input-group-text">$</span>
       <input id="totalCost"
-        v-model.number="totalCost"
+        v-model="totalCostInput"
         type="text"
         class="form-control"
         readonly
@@ -52,7 +52,10 @@ export default {
     ...mapState({
       stateProject: state => state.projects.project,
       totalCost: state => state.materials.totalCost
-    })
+    }),
+    totalCostInput () {
+      return this.$filters.toCurrency(this.totalCost).replace('$', '')
+    }
   },
   methods: {
     blur () {

@@ -5,7 +5,7 @@
     <div class="list-group-item d-flex justify-content-between">
       <div class="left-container">
         <div class="mb-1 d-flex">
-          <h5 class="me-1">{{ material.name }}</h5>
+          <h5 class="me-2">{{ material.name }}</h5>
           <button class="button-icon"
             @click="openMaterialDialog(material)">
             <i class="bi-pencil-fill"></i>
@@ -101,7 +101,7 @@ export default {
 
 <style scoped lang="scss">
   .material-cost {
-    opacity: 0.5;
+    opacity: 0.7;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
