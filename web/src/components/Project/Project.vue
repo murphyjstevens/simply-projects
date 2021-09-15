@@ -1,39 +1,36 @@
 <template>
-  <div class="page-header" v-if="project">
-    <router-link to="/"
-      class="btn btn-secondary">Back</router-link>
-    <span class="page-title">{{stateProject.name}}</span>
-  </div>
-
-  <div class="project-wrapper" v-if="project">
-    <div class="project-content flex-column">
-      <label for="name">Name</label>
-      <input id="name"
-        class="form-control input-column"
-        v-model="project.name"
-        @blur="blur()"
-        type="text"
-        placeholder="Name">
-
-      <label for="totalCost">Total Cost</label>
-      <div class="input-group input-column">
-        <span class="input-group-text">$</span>
-        <input id="totalCost"
-          v-model.number="totalCost"
-          type="text"
-          class="form-control"
-          readonly
-          placeholder="Total Cost">
-      </div>
-
-      <label for="description">Description</label>
-      <textarea id="description"
-        class="form-control input-column"
-        v-model="project.description"
-        @blur="blur()"></textarea>
-
-      <Materials :projectId="project?.id" />
+  <div class="project-content flex-column" v-if="project">
+    <div class="d-flex flex-row mb-3">
+      <router-link to="/"
+        class="btn btn-secondary">Back</router-link>
+      <span class="page-title">{{stateProject.name}}</span>
     </div>
+    <label for="name">Name</label>
+    <input id="name"
+      class="form-control input-column"
+      v-model="project.name"
+      @blur="blur()"
+      type="text"
+      placeholder="Name">
+
+    <label for="totalCost">Total Cost</label>
+    <div class="input-group input-column">
+      <span class="input-group-text">$</span>
+      <input id="totalCost"
+        v-model.number="totalCost"
+        type="text"
+        class="form-control"
+        readonly
+        placeholder="Total Cost">
+    </div>
+
+    <label for="description">Description</label>
+    <textarea id="description"
+      class="form-control input-column"
+      v-model="project.description"
+      @blur="blur()"></textarea>
+
+    <Materials :projectId="project?.id" />
   </div>
 </template>
 
@@ -82,6 +79,19 @@ export default {
 
 <style scoped lang="scss">
   .project-content {
+    background-color: #FFFFFFAA;
+    padding: 20px 30px 30px 30px;
+    margin-top: -10px;
+    border-radius: 0 0 50px 50px;
+
+    .page-title {
+      margin: 0 10px;
+      flex: 1;
+      font-size: 24px;
+      font-weight: bold;
+      text-overflow: ellipsis;
+    }
+
     .input-column {
       margin-bottom: 10px;
     }
