@@ -104,9 +104,12 @@ const mutations = {
     this.commit('materials/setTotalCost')
   },
   setTotalCost (state) {
-    const totalCost = state.projectMaterials
-      .map(material => material ? material.cost * material.quantity : 0)
-      .reduce((previous, current) => previous + current)
+    let totalCost = 0.00
+    if (state.projectMaterials.length) {
+      totalCost = state.projectMaterials
+        .map(material => material ? material.cost * material.quantity : 0)
+        .reduce((previous, current) => previous + current)
+    }
 
     state.totalCost = totalCost
   }
