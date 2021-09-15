@@ -16,7 +16,7 @@
         <router-link :to="{ name: 'Project', params: { id: project.id }}" class="card">
           <div class="card-body">
             <h4 class="card-title">{{ project.name }}</h4>
-            <h5 class="card-text">{{ project.totalCost }}</h5>
+            <h5 class="card-text">{{ convertToCurrency(project.totalCost) }}</h5>
             <p class="card-text">{{ project.description }}</p>
           </div>
         </router-link>
@@ -46,6 +46,9 @@ export default {
       if (this.$refs.addModal) {
         this.$refs.addModal.open()
       }
+    },
+    convertToCurrency (valueToConvert) {
+      return this.$filters.toCurrency(valueToConvert)
     }
   },
   created () {
