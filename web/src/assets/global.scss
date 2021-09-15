@@ -1,5 +1,8 @@
 body {
   background-color: whitesmoke;
+  // background-color: #FF3CAC;
+  // background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);  
+  // background-attachment: fixed;
 }
 
 .button-icon {
@@ -34,4 +37,32 @@ body {
     font-weight: bold;
     text-overflow: ellipsis;
   }
+}
+
+
+.masonry-grid {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: space-between;
+  /* Your container needs a fixed height, and it 
+   * needs to be taller than your tallest column. */
+  height: 600px; 
+}
+
+.masonry-item {
+  width: 48%;
+  margin-bottom: 2%; /* Optional */
+}
+
+/* Re-order items into 3 rows */
+.masonry-item:nth-child(3n) { order: 1; }
+.masonry-item:nth-child(3n+1) { order: 2; }
+
+/* Force new columns */
+.masonry-grid::before,
+.masonry-grid::after {
+  content: "";
+  flex-basis: 100%;
+  width: 0;
+  order: 2;
 }

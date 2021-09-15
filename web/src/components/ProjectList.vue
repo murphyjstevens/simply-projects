@@ -5,8 +5,8 @@
   </div>
 
   <div class="container">
-    <div class="row row-cols-2 justify-content-center">
-      <div v-for="project in projects" :key="project.id" class="col">
+    <div class="masonry-grid">
+      <div v-for="project in projects" :key="project.id" class="masonry-item">
         <router-link :to="{ name: 'Project', params: { id: project.id }}" class="card">
           <div class="card-body">
             <h4 class="card-title">{{ project.name }}</h4>
