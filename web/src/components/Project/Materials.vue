@@ -15,9 +15,13 @@
         <div class="left-container">
           <div class="mb-1 d-flex">
             <h5 class="me-2">{{ material.name }}</h5>
-            <button class="button-icon"
+            <button class="button-icon me-2"
               @click="openMaterialDialog(material)">
               <i class="bi-pencil-fill"></i>
+            </button>
+            <button class="button-icon button-icon-danger"
+              @click="confirmDeleteMaterial(material)">
+              <i class="bi-trash-fill"></i>
             </button>
           </div>
 
@@ -42,14 +46,17 @@
   </div>
 
   <MaterialDialog ref="modal" />
+  <DeleteConfirmation ref="deleteConfirmationModal" />
 </template>
 
 <script>
 import MaterialDialog from './MaterialDialog.vue'
+import DeleteConfirmation from '../Shared/DeleteConfirmation.vue'
 
 export default {
   name: 'Materials',
   components: {
+    DeleteConfirmation,
     MaterialDialog
   },
   props: ['projectId'],
@@ -97,6 +104,16 @@ export default {
       }
 
       this.$store.dispatch('materials/reorder', reorderRequest)
+    },
+    confirmDeleteMaterial (material) {
+      if (!this.$refs.deleteConfirmationModal || !material) {
+        return
+      }
+
+      this.$refs.deleteConfirmationModal.open(this.deleteMaterial, material.id, material.name)
+    },
+    deleteMaterial (materialId) {
+      this.$store.dispatch('materials/delete', materialId)
     }
   },
   created () {
