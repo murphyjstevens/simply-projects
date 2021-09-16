@@ -1,39 +1,47 @@
 <template>
-  <div v-for="material in materials"
-    :key="material.id"
-    class="list-group">
-    <div class="list-group-item d-flex justify-content-between">
-      <div class="left-container">
-        <div class="mb-1 d-flex">
-          <h5 class="me-2">{{ material.name }}</h5>
+  <div class="d-flex flex-column">
+    <div class="d-flex flex-row mb-1 justify-content-between">
+      <h4 class="align-self-end mb-0">Materials</h4>
+      <button class="btn btn-primary btn-sm"
+        @click="openMaterialDialog()">
+        <i class="bi-plus-lg me-1"></i>
+        <span>Add</span>
+      </button>
+    </div>
+    <div v-for="material in materials"
+      :key="material.id"
+      class="list-group">
+      <div class="list-group-item d-flex justify-content-between">
+        <div class="left-container">
+          <div class="mb-1 d-flex">
+            <h5 class="me-2">{{ material.name }}</h5>
+            <button class="button-icon"
+              @click="openMaterialDialog(material)">
+              <i class="bi-pencil-fill"></i>
+            </button>
+          </div>
+
+          <p class="mb-1">{{ $filters.toCurrency(material.cost) }} each</p>
+          <small>x {{ material.quantity }}</small>
+        </div>
+        <div class="d-flex flex-column justify-content-center align-items-end">
           <button class="button-icon"
-            @click="openMaterialDialog(material)">
-            <i class="bi-pencil-fill"></i>
+            @click="reorder(material, true)"
+            :disabled="material.sortOrder === 0">
+            <i class="bi-chevron-up"></i>
+          </button>
+          <h5 class="material-cost">{{ $filters.toCurrency(calculateTotalCost(material)) }}</h5>
+          <button class="button-icon"
+            @click="reorder(material, false)"
+            :disabled="material.sortOrder === materials.length - 1">
+            <i class="bi-chevron-down"></i>
           </button>
         </div>
-
-        <p class="mb-1">{{ $filters.toCurrency(material.cost) }} each</p>
-        <small>x {{ material.quantity }}</small>
-      </div>
-      <div class="d-flex flex-column justify-content-center align-items-end">
-        <button class="button-icon"
-          @click="reorder(material, true)"
-          :disabled="material.sortOrder === 0">
-          <i class="bi-chevron-up"></i>
-        </button>
-        <h5 class="material-cost">{{ $filters.toCurrency(calculateTotalCost(material)) }}</h5>
-        <button class="button-icon"
-          @click="reorder(material, false)"
-          :disabled="material.sortOrder === materials.length - 1">
-          <i class="bi-chevron-down"></i>
-        </button>
       </div>
     </div>
   </div>
 
-  <MaterialDialog ref="modal"
-    :materialId="dialogMaterialId"
-    :projectId="dialogProjectId" />
+  <MaterialDialog ref="modal" />
 </template>
 
 <script>
@@ -47,15 +55,12 @@ export default {
   props: ['projectId'],
   data () {
     return {
-      materials: [],
-      dialogMaterialId: null,
-      dialogProjectId: null
+      materials: []
     }
   },
   watch: {
     '$store.state.materials.projectMaterials': function () {
-      console.log(this.$store.state.materials.projectMaterials.sort((a, b) => a.sortOrder - b.sortOrder))
-      this.materials = this.$store.state.materials.projectMaterials // .sort((a, b) => a.sortOrder - b.sortOrder)
+      this.materials = this.$store.state.materials.projectMaterials
     }
   },
   methods: {
@@ -64,11 +69,7 @@ export default {
     },
     openMaterialDialog (material) {
       if (this.$refs.modal) {
-        this.dialogMaterialId = material?.id
-        this.dialogProjectId = material?.projectId
-        setTimeout(() => {
-          this.$refs.modal.open()
-        })
+        this.$refs.modal.open(material?.id, this.projectId)
       }
     },
     reorder (material, isUp) {

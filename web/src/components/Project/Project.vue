@@ -3,7 +3,7 @@
     <div class="d-flex flex-row mb-3">
       <router-link to="/"
         class="btn btn-secondary">Back</router-link>
-      <span class="page-title">{{stateProject.name}}</span>
+      <h2 class="page-title">{{stateProject.name}}</h2>
     </div>
     <label for="name">Name</label>
     <input id="name"
@@ -90,8 +90,6 @@ export default {
     .page-title {
       margin: 0 10px;
       flex: 1;
-      font-size: 24px;
-      font-weight: bold;
       text-overflow: ellipsis;
     }
 

@@ -68,13 +68,10 @@ import { Modal } from 'bootstrap'
 
 export default {
   name: 'MaterialDialog',
-  props: [
-    'materialId',
-    'projectId'
-  ],
   data () {
     return {
       originalMaterial: null,
+      projectId: null,
       name: null,
       cost: null,
       quantity: null,
@@ -94,21 +91,20 @@ export default {
   },
   watch: {
     '$store.state.materials.material': function () {
-      if (this.stateMaterial) {
-        this.originalMaterial = { ...this.stateMaterial }
-        this.name = this.stateMaterial.name
-        this.cost = this.stateMaterial.cost
-        this.quantity = this.stateMaterial.quantity
-      }
+      this.originalMaterial = this.stateMaterial ? { ...this.stateMaterial } : null
+      this.name = this.stateMaterial?.name
+      this.cost = this.stateMaterial?.cost
+      this.quantity = this.stateMaterial?.quantity
     }
   },
   methods: {
-    open () {
+    open (materialId, projectId) {
       this.modal.show()
 
       this.originalMaterial = null
-      if (this.materialId) {
-        this.$store.dispatch('materials/find', this.materialId)
+      this.projectId = projectId
+      if (materialId) {
+        this.$store.dispatch('materials/find', materialId)
       } else {
         this.$store.commit('materials/setMaterial', null)
       }
@@ -122,7 +118,13 @@ export default {
         const combinedMaterial = Object.assign({ ...this.originalMaterial }, updatedMaterial)
         await this.$store.dispatch('materials/update', combinedMaterial)
       } else {
-        const updatedMaterial = { name: this.name, cost: this.cost, quantity: this.quantity, sortOrder: this.$store.state.materials.materials.length }
+        const updatedMaterial = {
+          projectId: this.projectId,
+          name: this.name,
+          cost: this.cost,
+          quantity: this.quantity,
+          sortOrder: this.$store.state.materials.materials.length
+        }
         await this.$store.dispatch('materials/create', updatedMaterial)
       }
       this.modal.hide()
