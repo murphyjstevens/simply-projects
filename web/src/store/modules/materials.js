@@ -64,6 +64,18 @@ const actions = {
       console.error(error)
     }
   },
+  async reorder ({ commit }, request) {
+    try {
+      if (!request.item1 || !request.item2) {
+        console.error('The parameters are invalid')
+        return
+      }
+      const response = await axios.patch(baseUrl + '/materials/reorder', request)
+      commit('reorderMaterials', response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  },
   async delete ({ commit }, materialId) {
     try {
       if (!materialId) {
@@ -96,6 +108,13 @@ const mutations = {
     state.projectMaterials[index] = material
     state.projectMaterials.sort((a, b) => a.sortOrder - b.sortOrder)
     this.commit('materials/setTotalCost')
+  },
+  reorderMaterials (state, response) {
+    const item1Index = state.projectMaterials.findIndex(p => p.id === response.item1.id)
+    state.projectMaterials[item1Index] = response.item1
+    const item2Index = state.projectMaterials.findIndex(p => p.id === response.item2.id)
+    state.projectMaterials[item2Index] = response.item2
+    state.projectMaterials.sort((a, b) => a.sortOrder - b.sortOrder)
   },
   deleteMaterial (state, materialId) {
     state.projectMaterials = state.projectMaterials

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Models;
 using Api.Repositories;
+using Api.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -41,6 +43,14 @@ namespace Api.Controllers
         {
             Material updatedMaterial = await _repository.Update(material);
             return Ok(updatedMaterial);
+        }
+
+        [HttpPatch]
+        [Route("materials/reorder")]
+        public async Task<IActionResult> Reorder(MaterialReorderRequest request)
+        {
+            Tuple<Material, Material> materialTuple = await _repository.Reorder(request);
+            return Ok(materialTuple);
         }
 
         [HttpDelete]

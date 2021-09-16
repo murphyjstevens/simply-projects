@@ -85,9 +85,18 @@ export default {
         console.error('Could not find sort order')
       }
 
-      this.$store.dispatch('materials/update', { ...otherMaterial, sortOrder: material.sortOrder })
+      const reorderRequest = {
+        item1: {
+          id: material.id,
+          sortOrder: newOrder
+        },
+        item2: {
+          id: otherMaterial.id,
+          sortOrder: material.sortOrder
+        }
+      }
 
-      this.$store.dispatch('materials/update', { ...material, sortOrder: newOrder })
+      this.$store.dispatch('materials/reorder', reorderRequest)
     }
   },
   created () {

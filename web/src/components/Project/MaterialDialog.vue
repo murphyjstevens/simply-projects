@@ -12,29 +12,33 @@
         <div class="modal-body">
           <div class="container-fluid">
             <div class="row gy-3">
-              <p v-if="errors.length">
-                <b>Please correct the following error(s):</b>
-                <ul>
-                  <li v-for="error in errors" :key="error">{{ error }}</li>
-                </ul>
-              </p>
               <div class="col-sm-12">
                 <label for="dialog-name" class="form-label">Name</label>
                 <input id="dialog-name"
                   type="text"
                   class="form-control"
+                  :class="{ 'is-invalid': v$.name.$error }"
                   placeholder="Name"
-                  v-model="name">
+                  v-model="name"
+                  @blur="v$.name.$touch">
+                <div class="input-errors" v-for="error of v$.name.$errors" :key="error.$uid">
+                  <div class="error-msg invalid-feedback d-block">{{ error.$message }}</div>
+                </div>
               </div>
               <div class="col-sm-12 col-md-6">
                 <label for="dialog-cost" class="form-label">Cost</label>
                 <div id="dialog-cost"
-                  class="input-group">
+                  class="input-group has-validation">
                   <span class="input-group-text">$</span>
                   <input type="number"
                     class="form-control"
+                    :class="{ 'is-invalid': v$.cost.$error }"
                     placeholder="Cost"
-                    v-model.number="cost">
+                    v-model.number="cost"
+                    @blur="v$.cost.$touch">
+                </div>
+                <div class="input-errors" v-for="error of v$.cost.$errors" :key="error.$uid">
+                  <div class="error-msg invalid-feedback d-block">{{ error.$message }}</div>
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
@@ -42,8 +46,13 @@
                 <input id="dialog-quantity"
                   type="number"
                   class="form-control"
+                  :class="{ 'is-invalid': v$.quantity.$error }"
                   placeholder="Quantity"
-                  v-model.number="quantity">
+                  v-model.number="quantity"
+                  @blur="v$.quantity.$touch">
+                <div class="input-errors" v-for="error of v$.quantity.$errors" :key="error.$uid">
+                  <div class="error-msg invalid-feedback d-block">{{ error.$message }}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -52,7 +61,7 @@
           <button type="button"
             class="btn btn-primary"
             @click="save()"
-            :disabled="errors.length || !isDirty">Save</button>
+            :disabled="!isDirty">Save</button>
           <button type="button"
             class="btn btn-secondary"
             @click="close()">Close</button>
@@ -65,17 +74,21 @@
 <script>
 import { mapState } from 'vuex'
 import { Modal } from 'bootstrap'
+import useVuelidate from '@vuelidate/core'
+import { integer, minValue, numeric, required } from '@vuelidate/validators'
 
 export default {
   name: 'MaterialDialog',
+  setup () {
+    return { v$: useVuelidate() }
+  },
   data () {
     return {
       originalMaterial: null,
       projectId: null,
       name: null,
       cost: null,
-      quantity: null,
-      errors: []
+      quantity: null
     }
   },
   computed: {
@@ -123,35 +136,22 @@ export default {
           name: this.name,
           cost: this.cost,
           quantity: this.quantity,
-          sortOrder: this.$store.state.materials.materials.length
+          sortOrder: this.$store.state.materials.projectMaterials.length
         }
         await this.$store.dispatch('materials/create', updatedMaterial)
       }
       this.modal.hide()
     }
-    // checkValidity () {
-    //   const errors = []
-    //   if (!this.name || !this.name.trim()) {
-    //     errors.concat('Name is a required field')
-    //   }
-
-    //   if (!this.cost) {
-    //     errors.concat('Cost is a required field')
-    //   }
-    //   if (this.cost < 0) {
-    //     errors.concat('Cost can not be negative')
-    //   }
-
-    //   if (!this.quantity) {
-    //     errors.concat('Quantity is a required field')
-    //   }
-    //   if (this.quantity < 0) {
-    //     errors.concat('Quantity is a required field')
-    //   }
-    // }
   },
   mounted () {
     this.modal = new Modal(this.$refs.modal, {})
+  },
+  validations () {
+    return {
+      name: { required },
+      cost: { required, numeric },
+      quantity: { required, integer, minValue: minValue(1) }
+    }
   }
 }
 </script>
