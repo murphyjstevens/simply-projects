@@ -123,6 +123,7 @@ export default {
       }
     },
     close () {
+      this.$store.commit('materials/setMaterial', null)
       this.modal.hide()
     },
     async save () {
@@ -140,7 +141,7 @@ export default {
         }
         await this.$store.dispatch('materials/create', updatedMaterial)
       }
-      this.modal.hide()
+      this.close()
     }
   },
   mounted () {
