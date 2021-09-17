@@ -8,25 +8,39 @@
         </div>
         <div class="modal-body">
           <div class="container-fluid">
-            <div class="row">
-              <div class="col-sm-12 col-md-6">
-                <input type="text" class="form-control" placeholder="Name" v-model="name">
-              </div>
-              <div class="col-sm-12 col-md-6">
-                <div class="input-group">
-                  <span class="input-group-text">$</span>
-                  <input type="text" class="form-control" placeholder="Total Cost" v-model="totalCost">
+            <div class="row gy-3">
+              <div class="col-sm-12">
+                <label for="dialog-name" class="form-label">Name</label>
+                <input v-model="name"
+                  type="text"
+                  id="dialog-name"
+                  class="form-control"
+                  :class="{ 'is-invalid': v$.name.$error }"
+                  placeholder="Name"
+                  maxlength="100"
+                  @blur="v$.name.$touch">
+                <div class="input-errors" v-for="error of v$.name.$errors" :key="error.$uid">
+                  <div class="error-msg invalid-feedback d-block">{{ error.$message }}</div>
                 </div>
               </div>
               <div class="col-sm-12">
-                <textarea class="form-control" v-model="description"></textarea>
+                <label for="dialog-description" class="form-label">Description</label>
+                <textarea v-model="description"
+                  id="dialog-description"
+                  class="form-control"
+                  maxlength="500"></textarea>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" @click="save()">Save</button>
-          <button type="button" class="btn btn-secondary" @click="close()">Close</button>
+          <button type="button"
+            class="btn btn-primary"
+            :disabled="!v$.$dirty || v$.$invalid"
+            @click="save()">Save</button>
+          <button type="button"
+            class="btn btn-secondary"
+            @click="close()">Close</button>
         </div>
       </div>
     </div>
@@ -35,6 +49,8 @@
 
 <script>
 import { Modal } from 'bootstrap'
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 
 export default {
   name: 'AddProject',
@@ -42,9 +58,11 @@ export default {
     return {
       modal: undefined,
       name: '',
-      totalCost: 0.00,
       description: ''
     }
+  },
+  setup () {
+    return { v$: useVuelidate() }
   },
   mounted () {
     this.modal = new Modal(this.$refs.modal, {})
@@ -52,13 +70,37 @@ export default {
   methods: {
     open () {
       this.modal.show()
+      this.reset()
     },
     close () {
       this.modal.hide()
+    },
+    reset () {
+      this.name = null
+      this.description = null
+      this.$nextTick(() => {
+        this.v$.$reset()
+      })
+    },
+    async save () {
+      if (this.v$.invalid) {
+        return
+      }
+
+      await this.$store.dispatch('projects/create', { name: this.name, description: this.description })
+      this.close()
+    }
+  },
+  validations () {
+    return {
+      name: { required }
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+  textarea {
+    resize: none;
+  }
 </style>
