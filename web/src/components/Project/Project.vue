@@ -1,14 +1,16 @@
 <template>
-  <div class="project-content flex-column" v-if="project">
+  <div class="project-content flex-column" v-if="id">
     <div class="d-flex flex-row mb-3">
       <router-link to="/"
         class="btn btn-secondary">Back</router-link>
-      <h2 class="page-title">{{stateProject.name}}</h2>
+      <h2 class="page-title">{{stateProject?.name}}</h2>
+      <button class="btn btn-danger"
+        @click="confirmDeleteProject()">Delete</button>
     </div>
     <label for="name">Name</label>
     <input id="name"
       class="form-control input-column"
-      v-model="project.name"
+      v-model="name"
       @blur="blur()"
       type="text"
       placeholder="Name">
@@ -27,25 +29,30 @@
     <label for="description">Description</label>
     <textarea id="description"
       class="form-control input-column"
-      v-model="project.description"
+      v-model="description"
       @blur="blur()"></textarea>
 
-    <Materials :projectId="project?.id" />
+    <Materials :projectId="id" />
+    <DeleteConfirmation ref="deleteConfirmationModal" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import Materials from './Materials.vue'
+import DeleteConfirmation from '../Shared/DeleteConfirmation.vue'
 
 export default {
   name: 'Project',
   components: {
-    Materials
+    Materials,
+    DeleteConfirmation
   },
   data () {
     return {
-      project: null
+      id: null,
+      name: null,
+      description: null
     }
   },
   computed: {
@@ -55,27 +62,43 @@ export default {
     }),
     totalCostInput () {
       return this.$filters.toCurrency(this.totalCost).replace('$', '')
+    },
+    hasChanges () {
+      return this.stateProject &&
+        this.name === this.stateProject.name &&
+        this.description === this.stateProject.description
     }
   },
   methods: {
     blur () {
-      const hasChanges = !this.checkProjectEquals(this.project, this.stateProject)
-      if (hasChanges) {
-        this.$store.dispatch('projects/update', this.project)
+      if (this.hasChanges) {
+        this.$store.dispatch('projects/update', { id: this.id, name: this.name, description: this.description })
       }
     },
-    checkProjectEquals (a, b) {
-      return (!a && !b) || (a && b && a.name === b.name && a.description === b.description)
+    confirmDeleteProject () {
+      console.log(this.$refs.deleteConfirmationModal)
+      if (this.$refs.deleteConfirmationModal && this.id) {
+        this.$refs.deleteConfirmationModal.open(this.deleteProject, this.id, this.name)
+      }
+    },
+    async deleteProject () {
+      if (this.id) {
+        await this.$store.dispatch('projects/delete', this.id)
+        this.$router.push('/')
+      }
     }
   },
   watch: {
     '$store.state.projects.project': function () {
-      this.project = { ...this.stateProject }
+      this.name = this.stateProject?.name
+      this.description = this.stateProject?.description
     }
   },
   mounted () {
-    this.project = null
-    this.$store.dispatch('projects/find', +this.$route.params.id)
+    this.id = +this.$route.params.id
+    this.name = null
+    this.description = null
+    this.$store.dispatch('projects/find', this.id)
   }
 }
 </script>

@@ -80,7 +80,8 @@ GROUP BY p.id, p.name, p.description";
       using (var connection = new NpgsqlConnection(ConnectionString))
       {
         connection.Open();
-        string sql = @"DELETE FROM projects WHERE id = @Id";
+        string sql = @"DELETE FROM Materials WHERE project_id = @Id;
+          DELETE FROM projects WHERE id = @Id;";
         await connection.ExecuteAsync(sql, new { Id = id });
       }
     }
