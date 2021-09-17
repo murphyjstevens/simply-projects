@@ -30,11 +30,11 @@
                 <div id="dialog-cost"
                   class="input-group has-validation">
                   <span class="input-group-text">$</span>
-                  <input type="number"
-                    class="form-control"
+                  <input class="form-control"
                     :class="{ 'is-invalid': v$.cost.$error }"
                     placeholder="Cost"
                     v-model.number="cost"
+                    maxlength="15"
                     @blur="v$.cost.$touch">
                 </div>
                 <div class="input-errors" v-for="error of v$.cost.$errors" :key="error.$uid">
@@ -44,10 +44,10 @@
               <div class="col-sm-12 col-md-6">
                 <label for="dialog-quantity" class="form-label">Quantity</label>
                 <input id="dialog-quantity"
-                  type="number"
                   class="form-control"
                   :class="{ 'is-invalid': v$.quantity.$error }"
                   placeholder="Quantity"
+                  maxlength="10"
                   v-model.number="quantity"
                   @blur="v$.quantity.$touch">
                 <div class="input-errors" v-for="error of v$.quantity.$errors" :key="error.$uid">
@@ -61,7 +61,7 @@
           <button type="button"
             class="btn btn-primary"
             @click="save()"
-            :disabled="!isDirty">Save</button>
+            :disabled="!v$.$dirty || v$.$invalid">Save</button>
           <button type="button"
             class="btn btn-secondary"
             @click="close()">Close</button>
@@ -113,8 +113,8 @@ export default {
   methods: {
     open (materialId, projectId) {
       this.modal.show()
+      this.reset()
 
-      this.originalMaterial = null
       this.projectId = projectId
       if (materialId) {
         this.$store.dispatch('materials/find', materialId)
@@ -125,6 +125,15 @@ export default {
     close () {
       this.$store.commit('materials/setMaterial', null)
       this.modal.hide()
+    },
+    reset () {
+      this.originalMaterial = null
+      this.name = null
+      this.cost = null
+      this.quantity = null
+      this.$nextTick(() => {
+        this.v$.$reset()
+      })
     },
     async save () {
       const updatedMaterial = { name: this.name, cost: this.cost, quantity: this.quantity }
