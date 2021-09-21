@@ -65,8 +65,8 @@ export default {
     },
     hasChanges () {
       return this.stateProject &&
-        this.name === this.stateProject.name &&
-        this.description === this.stateProject.description
+        (this.name !== this.stateProject.name ||
+        this.description !== this.stateProject.description)
     }
   },
   methods: {
@@ -76,7 +76,6 @@ export default {
       }
     },
     confirmDeleteProject () {
-      console.log(this.$refs.deleteConfirmationModal)
       if (this.$refs.deleteConfirmationModal && this.id) {
         this.$refs.deleteConfirmationModal.open(this.deleteProject, this.id, this.name)
       }
