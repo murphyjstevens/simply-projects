@@ -33,7 +33,7 @@ namespace Api
                 options.AddPolicy(MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:8080")
+                        builder.WithOrigins(Configuration.GetValue<string>("ClientURL"))
                             .WithMethods("OPTIONS", "GET", "POST", "PATCH", "PUT", "DELETE")
                             .WithHeaders("content-type");
                     }

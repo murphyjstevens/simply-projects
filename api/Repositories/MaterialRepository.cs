@@ -7,6 +7,7 @@ using Api.Requests;
 using static Dapper.SqlMapper;
 using System.Linq;
 using System;
+using Microsoft.Extensions.Configuration;
 
 namespace Api.Repositories
 {
@@ -21,6 +22,10 @@ namespace Api.Repositories
     public class MaterialRepository : CoreRepository, IMaterialRepository
     {
         private const string RETURN_OBJECT = "id, project_id as ProjectId, name, cost, quantity, sort_order as SortOrder";
+
+        public MaterialRepository(IConfiguration configuration) : base(configuration)
+        {
+        }
 
         public async Task<IEnumerable<Material>> GetByProjectId(int projectId)
         {

@@ -3,6 +3,7 @@ using Npgsql;
 using System.Collections.Generic;
 using Api.Models;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Api.Repositories
 {
@@ -19,6 +20,10 @@ namespace Api.Repositories
   public class ProjectRepository : CoreRepository, IProjectRepository
   {
     private const string RETURN_OBJECT = "id, name, description";
+
+    public ProjectRepository(IConfiguration configuration) : base(configuration)
+    {
+    }
 
     public async Task<IEnumerable<Project>> Get()
     {
